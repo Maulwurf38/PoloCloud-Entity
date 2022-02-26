@@ -7,6 +7,7 @@ import de.polocloud.plugin.entity.common.base.info.CloudEntityInfo;
 import de.polocloud.plugin.entity.config.EntitiesConfig;
 import de.polocloud.plugin.entity.config.gson.Document;
 import de.polocloud.plugin.entity.listener.CloudEntitiesListener;
+import de.polocloud.plugin.entity.listener.CloudListener;
 import de.polocloud.plugin.entity.listener.InventoryClickListener;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -48,6 +49,7 @@ public class CloudEntityHandler {
 
         new CloudEntitiesListener();
         new InventoryClickListener();
+        new CloudListener();
     }
 
     public void callShutdown() {

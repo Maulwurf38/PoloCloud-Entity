@@ -4,9 +4,11 @@ import de.polocloud.api.CloudAPI;
 import de.polocloud.api.groups.ServiceGroup;
 import de.polocloud.plugin.entity.common.CloudEntityHandler;
 import de.polocloud.plugin.entity.common.base.info.CloudEntityInfo;
-import de.polocloud.plugin.entity.config.CloudEntityTitleConverter;
+import de.polocloud.plugin.entity.config.ConfigPlaceholdersReplacer;
 import lombok.Getter;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Villager;
 
 @Getter
 public class CloudEntity {
@@ -35,11 +37,19 @@ public class CloudEntity {
         if (serviceGroup == null) {
             this.spawnedEntity.setCustomName("§cError §7(Group not found)");
         } else {
-            this.spawnedEntity.setCustomName(CloudEntityTitleConverter.convertString(this.cloudEntityInfo, serviceGroup));
+            this.spawnedEntity.setCustomName(ConfigPlaceholdersReplacer.convertString(this.cloudEntityInfo, serviceGroup));
         }
         this.spawnedEntity.setSilent(true);
         this.spawnedEntity.setAI(false);
+        this.spawnedEntity.setFireTicks(0);
 
+        if (this.spawnedEntity.getType().equals(EntityType.VILLAGER)) {
+            Villager villager = getCastedEntity();
+            if (villager != null) {
+                villager.setProfession(Villager.Profession.CLERIC);
+                villager.setVillagerType(Villager.Type.TAIGA);
+            }
+        }
     }
 
     public void update() {
@@ -48,7 +58,15 @@ public class CloudEntity {
             if (serviceGroup == null) {
                 return;
             }
-            this.spawnedEntity.setCustomName(CloudEntityTitleConverter.convertString(this.cloudEntityInfo, serviceGroup));
+            this.spawnedEntity.setCustomName(ConfigPlaceholdersReplacer.convertString(this.cloudEntityInfo, serviceGroup));
+        }
+    }
+
+    public <T> T getCastedEntity() {
+        try {
+            return (T) this.spawnedEntity;
+        } catch (ClassCastException exception) {
+            return null;
         }
     }
 

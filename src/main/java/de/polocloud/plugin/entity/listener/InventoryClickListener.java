@@ -24,12 +24,20 @@ public class InventoryClickListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         if (GUIHandler.currentInventories.containsKey(player.getUniqueId()) && GUIHandler.currentInventories.get(player.getUniqueId()).equals(event.getInventory())) {
             event.setCancelled(true);
-            //TODO NullPointer
             if (event.getCurrentItem() != null && !event.getCurrentItem().getType().equals(Material.AIR) && event.getCurrentItem().getItemMeta() != null) {
                 CloudAPI.getInstance().getServiceManager().getService(Objects.requireNonNull(event.getCurrentItem()
                         .getItemMeta().getPersistentDataContainer()
-                        .get(CloudEntityHandler.getInstance().getNamespacedKey(), PersistentDataType.STRING))).ifPresent(cloudService ->
-                        CloudAPI.getInstance().getPlayerManager().getCloudPlayer(player.getUniqueId()).ifPresent(cloudPlayer -> cloudPlayer.connect(cloudService)));
+                        .get(CloudEntityHandler.getInstance().getNamespacedKey(), PersistentDataType.STRING))).ifPresent(cloudService -> {
+                    player.closeInventory();
+                    CloudAPI.getInstance().getPlayerManager().getCloudPlayer(player.getUniqueId()).ifPresent(cloudPlayer -> {
+                        player.sendMessage("§7Connecting...");
+                        if (cloudPlayer.getServer().equals(cloudService)) {
+                            player.sendMessage("§cYou are already on this service!");
+                            return;
+                        }
+                        cloudPlayer.connect(cloudService);
+                    });
+                });
             }
         }
     }

@@ -10,7 +10,7 @@ public class CloudEntityInfo {
     private Location location;
     private String possibleGroup;
     private EntityType entityType;
-    private String entityTitle = "§b{GROUP} §e{PLAYERS} §7online";
+    private String entityTitle = "§b{GROUP} §7| §e{PLAYERS} §7Players §aonline";
 
     public CloudEntityInfo(Location location, String possibleGroup, EntityType entityType) {
         this.location = location;

@@ -6,7 +6,8 @@ import de.polocloud.api.service.CloudService;
 import de.polocloud.api.service.ServiceState;
 import de.polocloud.plugin.entity.common.CloudEntityHandler;
 import de.polocloud.plugin.entity.common.base.CloudEntity;
-import de.polocloud.plugin.entity.config.CloudEntityTitleConverter;
+import de.polocloud.plugin.entity.config.ConfigPlaceholdersReplacer;
+import de.polocloud.plugin.entity.event.CloudEntityInventoryOpenEvent;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -33,12 +35,19 @@ public class CloudEntityGUI {
             return;
         }
 
-        Inventory inventory = Bukkit.createInventory(null, size, CloudEntityTitleConverter.convertString(CloudEntityHandler.getInstance().getConfig().getInventoryTitle(), serviceGroup));
+        Inventory inventory = Bukkit.createInventory(null, size, ConfigPlaceholdersReplacer.convertString(CloudEntityHandler.getInstance().getConfig().getInventoryTitle(), serviceGroup));
         List<CloudService> services = CloudAPI.getInstance().getServiceManager().getAllServicesByGroup(serviceGroup).stream().filter(server -> server.getState().equals(ServiceState.ONLINE)).toList();
         for (int i = 0; i < (Math.min(services.size(), 53)); i++) {
             inventory.addItem(buildItemStack(services.get(i)));
         }
 
+        CloudEntityInventoryOpenEvent event = new CloudEntityInventoryOpenEvent(player, cloudEntity, serviceGroup, services, inventory);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCanceled()) {
+            return;
+        }
+        inventory = event.getInventory();
 
         GUIHandler.currentInventories.put(player.getUniqueId(), inventory);
         player.openInventory(inventory);
@@ -49,7 +58,12 @@ public class CloudEntityGUI {
                 (cloudService.getOnlineCount() > 0 ? Material.GREEN_CONCRETE : Material.LIME_CONCRETE),
                 (cloudService.getOnlineCount() != 0 ? cloudService.getOnlineCount() : 1));
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName("§8» §a" + cloudService.getName());
+        itemMeta.setDisplayName(ConfigPlaceholdersReplacer.convertString(CloudEntityHandler.getInstance().getConfig().getItemName(), cloudService));
+        List<String> lore = new ArrayList<>();
+        for (String s : CloudEntityHandler.getInstance().getConfig().getItemLore()) {
+            lore.add(ConfigPlaceholdersReplacer.convertString(s, cloudService));
+        }
+        itemMeta.setLore(lore);
         itemMeta.getPersistentDataContainer().set(CloudEntityHandler.getInstance().getNamespacedKey(), PersistentDataType.STRING, cloudService.getName());
         itemStack.setItemMeta(itemMeta);
         return itemStack;

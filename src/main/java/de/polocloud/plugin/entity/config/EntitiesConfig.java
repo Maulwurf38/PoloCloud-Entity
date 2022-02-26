@@ -14,4 +14,7 @@ public class EntitiesConfig {
     private String entityCloudCommandPermission = "cloud.plugin.entity.command";
     private String inventoryTitle = "§b{GROUP}";
 
+    private String itemName = "§8» §a{SERVER}";
+    private String[] itemLore = new String[]{"", "§7Players §8» §b{ONLINE}§7/§b{MAX}", "§7Motd §8» §b{MOTD}", ""};
+
 }
