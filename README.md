@@ -124,6 +124,13 @@ Ways to get a CloudEntity:
 	
         CloudEntityHandler.getInstance().getCloudEntityOfEntity(yourEntity);
 
+## Get all CloudEntites
+
+Invoke:
+
+    List<CloudEntity> entities = CloudEntityHandler.getInstance().getEntities();
+
+
 ## Destroy a CloudEntity
 
 You need a CloudEntity, then invoke:
