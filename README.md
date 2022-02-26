@@ -86,9 +86,9 @@ Now if you want to change the Inventory (add Item, remove Item, change Item) you
       
       @EventHandler  
       public void handle(CloudEntityInventoryOpenEvent event) {  
-      Inventory inventory = event.getInventory();  
-      inventory.addItem(new ItemStack(Material.WOODEN_AXE));  
-      event.setInventory(inventory);  
+      	Inventory inventory = event.getInventory();  
+      	inventory.addItem(new ItemStack(Material.WOODEN_AXE));  
+      	event.setInventory(inventory);  
       }  
       
     }
