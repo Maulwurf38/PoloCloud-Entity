@@ -154,6 +154,7 @@ You need:
     String title; //<- Optional (Nullable) (only for placeholder)
     
     CloudEntity cloudEntity = CloudEntityHandler.getInstance().createCloudEntity(location, entityType, serviceGroup, title);
+    
     or when the title should be default:
     
     CloudEntity cloudEntity = CloudEntityHandler.getInstance().createCloudEntity(location, entityType, serviceGroup, null);
