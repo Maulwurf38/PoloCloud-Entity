@@ -5,6 +5,7 @@ import de.polocloud.api.groups.ServiceGroup;
 import de.polocloud.api.groups.utils.ServiceType;
 import de.polocloud.plugin.entity.common.CloudEntityHandler;
 import de.polocloud.plugin.entity.common.base.CloudEntity;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,12 +21,11 @@ public class CloudEntityCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("This command is only usable as a player.");
             return false;
         }
 
-        Player player = (Player) sender;
         if (!player.hasPermission(CloudEntityHandler.getInstance().getConfig().getEntityCloudCommandPermission())) {
             player.sendMessage("§cYou don't have the permission for that.");
             return false;
@@ -40,7 +40,7 @@ public class CloudEntityCommand implements CommandExecutor {
                 }
                 CloudEntity cloudEntity = null;
                 for (Entity entity : entities) {
-                    CloudEntity cloudEntityTemp = CloudEntityHandler.getInstance().getEntities().stream().filter(entity1 -> entity1.getSpawnedEntity().getEntityId() == entity.getEntityId()).findFirst().orElse(null);
+                    CloudEntity cloudEntityTemp = CloudEntityHandler.getInstance().getCloudEntityOfEntity(entity);
                     if (cloudEntityTemp != null) {
                         cloudEntity = cloudEntityTemp;
                         break;
@@ -58,7 +58,7 @@ public class CloudEntityCommand implements CommandExecutor {
         } else if (args.length == 3) {
             if (args[0].equals("create")) {
                 player.sendMessage("§7Creating...");
-                if (CloudEntityHandler.getInstance().getEntities().stream().anyMatch(entity -> entity.getCloudEntityInfo().getLocation().equals(player.getLocation()))) {
+                if (CloudEntityHandler.getInstance().getCloudEntityOfLocation(player.getLocation()) != null) {
                     player.sendMessage("§cThere is already a CloudEntity on your location!");
                     return false;
                 }
@@ -83,7 +83,7 @@ public class CloudEntityCommand implements CommandExecutor {
                 player.sendMessage("§aCreated!");
                 return false;
             }
-        } else if (args.length == 4) {
+        } else if (args.length >= 4) {
             if (args[0].equals("create")) {
                 String entityType_RAW = args[1];
                 EntityType entityType = entityTypeOfName(entityType_RAW);
@@ -101,15 +101,24 @@ public class CloudEntityCommand implements CommandExecutor {
                     player.sendMessage("§cThis cloudgroup is a proxy group!");
                     return false;
                 }
-                CloudEntityHandler.getInstance().createCloudEntity(player.getLocation(), entityType, serviceGroup, args[3]);
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < args.length; i++) {
+                    if (i < 3) {
+                        continue;
+                    }
+                    stringBuilder.append(ChatColor.translateAlternateColorCodes('&', args[i])).append(" ");
+                }
+
+                CloudEntityHandler.getInstance().createCloudEntity(player.getLocation(), entityType, serviceGroup, stringBuilder.toString());
                 return false;
             }
         }
 
-        player.sendMessage("§7Help §bCloudEntities\n" +
-                "  §7-> §bcreate <EntityType> <Group>§7, creates a CloudEntity with a specific Type and a CloudGroup (on your Location)\n" +
-                "  §7-> §bcreate <EntityType> <Group> <Name>§7, creates a CloudEntity with a specific Type, CloudGroup and a CustomName (on your Location)\n" +
-                "  §7-> §bremove§7, removes the CloudEntity near your Location");
+        player.sendMessage("""
+                §7Help §bCloudEntities
+                  §7-> §bcreate <EntityType> <Group>§7, creates a CloudEntity with a specific Type and a CloudGroup (on your Location)
+                  §7-> §bcreate <EntityType> <Group> <Name>§7, creates a CloudEntity with a specific Type, CloudGroup and a CustomName (on your Location)
+                  §7-> §bremove§7, removes the CloudEntity near your Location""");
 
         return false;
     }

@@ -12,6 +12,7 @@ import de.polocloud.plugin.entity.listener.InventoryClickListener;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +66,7 @@ public class CloudEntityHandler {
         }
     }
 
-    public void createCloudEntity(Location location, EntityType entityType, ServiceGroup serviceGroup, @Nullable String title) {
+    public CloudEntity createCloudEntity(Location location, EntityType entityType, ServiceGroup serviceGroup, @Nullable String title) {
         CloudEntityInfo cloudEntityInfo;
         if (title == null) {
             cloudEntityInfo = new CloudEntityInfo(location, serviceGroup.getName(), entityType);
@@ -74,8 +75,9 @@ public class CloudEntityHandler {
         }
 
         this.config.getCloudEntities().add(cloudEntityInfo);
-        new CloudEntity(cloudEntityInfo);
+        CloudEntity cloudEntity = new CloudEntity(cloudEntityInfo);
         saveConfig();
+        return cloudEntity;
     }
 
 
@@ -84,6 +86,21 @@ public class CloudEntityHandler {
         this.entities.remove(cloudEntity);
         this.config.getCloudEntities().remove(cloudEntity.getCloudEntityInfo());
         saveConfig();
+    }
+
+    @Nullable
+    public CloudEntity getCloudEntityOfLocation(Location location) {
+        return this.entities.stream().filter(entities -> entities.getSpawnedEntity().getLocation().equals(location)).findFirst().orElse(null);
+    }
+
+    @Nullable
+    public CloudEntity getCloudEntityOfLocation0(Location location) {
+        return this.entities.stream().filter(entities -> entities.getCloudEntityInfo().getLocation().equals(location)).findFirst().orElse(null);
+    }
+
+    @Nullable
+    public CloudEntity getCloudEntityOfEntity(Entity entity) {
+        return this.entities.stream().filter(entities -> entities.getSpawnedEntity().getEntityId() == entity.getEntityId()).findFirst().orElse(null);
     }
 
     public void saveConfig() {

@@ -17,14 +17,14 @@ public class CloudEntitiesListener implements Listener {
 
     @EventHandler
     public void handle(EntityDamageEvent event) {
-        if (CloudEntityHandler.getInstance().getEntities().stream().anyMatch(entity -> entity.getSpawnedEntity().getEntityId() == event.getEntity().getEntityId())) {
+        if (CloudEntityHandler.getInstance().getCloudEntityOfEntity(event.getEntity()) != null) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void handle(PlayerInteractEntityEvent event) {
-        CloudEntity cloudEntity = CloudEntityHandler.getInstance().getEntities().stream().filter(entity -> entity.getSpawnedEntity().getEntityId() == event.getRightClicked().getEntityId()).findFirst().orElse(null);
+        CloudEntity cloudEntity = CloudEntityHandler.getInstance().getCloudEntityOfEntity(event.getRightClicked());
         if (cloudEntity != null) {
             event.setCancelled(true);
             new CloudEntityGUI(cloudEntity, event.getPlayer());
