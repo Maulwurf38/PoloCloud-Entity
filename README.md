@@ -10,7 +10,9 @@ These Entities will then work as a "server-switcher".
 # Usage
 
 **Command**: */cloudentity*
+<br />
 **Aliases**: */entity, /entities, /cloudentites*
+<br />
 **Permission**: (default, is changeable in the Config) -> *cloud.plugin.entity.command*
 
 ## Create a Entity
@@ -142,7 +144,7 @@ You need:
 - Location
 - EntityType
 - ServiceGroup
-- (:information_source: Optional (How to use then? Simple use **null** as Title)
+- String (used as title) (:information_source: Optional (How to use then? Simple use **null** as Title)
 
 :information_source: This can return you a valid CloudEntity Object
 
