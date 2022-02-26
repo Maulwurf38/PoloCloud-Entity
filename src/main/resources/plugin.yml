@@ -2,7 +2,7 @@ name: PoloCloud-Entities
 author: iPommes
 version: 1.0
 main: de.polocloud.plugin.entity.bootstrap.CloudEntityBootstrap
-api-version: 1.18
+api-version: 1.13
 
 commands:
   cloudentity:
