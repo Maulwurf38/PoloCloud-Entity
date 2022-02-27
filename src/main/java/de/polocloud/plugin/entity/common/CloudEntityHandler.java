@@ -10,8 +10,7 @@ import de.polocloud.plugin.entity.listener.CloudEntitiesListener;
 import de.polocloud.plugin.entity.listener.CloudListener;
 import de.polocloud.plugin.entity.listener.InventoryClickListener;
 import lombok.Getter;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
@@ -19,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.List;
+import java.util.logging.Level;
 
 @Getter
 public class CloudEntityHandler {
@@ -61,6 +61,13 @@ public class CloudEntityHandler {
     }
 
     public void spawnEntities() {
+        this.plugin.getLogger().log(Level.INFO, "Checking world difficulties...");
+        for (World world : Bukkit.getWorlds()) {
+            if (world.getDifficulty().equals(Difficulty.PEACEFUL)) {
+                this.plugin.getLogger().log(Level.WARNING, "Difficulty in world (" + world.getName() + ") is §cPEACEFUL §7some CloudEntities may not spawn!");
+            }
+        }
+
         for (CloudEntityInfo cloudEntityInfo : this.config.getCloudEntities()) {
             new CloudEntity(cloudEntityInfo);
         }

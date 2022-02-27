@@ -1,6 +1,7 @@
 package de.polocloud.plugin.entity.bootstrap;
 
 import de.polocloud.plugin.entity.command.CloudEntityCommand;
+import de.polocloud.plugin.entity.command.completer.CloudEntityCommandTabCompleter;
 import de.polocloud.plugin.entity.common.CloudEntityHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +17,7 @@ public class CloudEntityBootstrap extends JavaPlugin {
 
         getCommand("cloudentity").setExecutor(new CloudEntityCommand());
         getCommand("cloudentity").setAliases(Arrays.asList("cloudentites", "entities", "entity"));
+        getCommand("cloudentity").setTabCompleter(new CloudEntityCommandTabCompleter());
     }
 
     @Override
