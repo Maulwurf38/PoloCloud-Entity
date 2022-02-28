@@ -51,7 +51,9 @@ There are different placeholders. You use them with these brackets {} in the bra
 
 # Developers
 
-**Import PoloCloud-Entity** in your **Maven** Project
+Download the [**SourceCode**](https://github.com/PoloServices/PoloCloud-Entity/archive/refs/tags/2.0.1.zip), import it in your **IDE** and run '**mvn install**'.
+
+Then in your Target-Project import the **PoloCloud-Entity** Dependency in your **pom.xml**
 
 ```xml
    <dependency>
