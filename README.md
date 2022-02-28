@@ -51,6 +51,16 @@ There are different placeholders. You use them with these brackets {} in the bra
 
 # Developers
 
+**Import PoloCloud-Entity** in your **Maven** Project
+
+```xml
+   <dependency>
+      <groupId>de.polocloud</groupId>
+      <artifactId>PoloCloud-Entity</artifactId>
+      <version>2.0.1-RELEASE</version>
+   </dependency>
+```
+
 **PoloCloud-Entity** offers the possibility to change the to open Inventory when a Player clicks on a CloudEntity
 
 *How does it work?*
