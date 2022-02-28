@@ -55,7 +55,7 @@ There are different placeholders. You use them with these brackets {} in the bra
 
 *How does it work?*
 You have to register a Listener, from there easly create a new void-Method with the @EventHandler Annonation
-
+```java
     public class Test implements Listener {  
       
       @EventHandler  
@@ -64,12 +64,13 @@ You have to register a Listener, from there easly create a new void-Method with 
       }  
       
     }
-
+```
 Used Imports:
-
+```java
     import de.polocloud.plugin.entity.event.CloudEntityInventoryOpenEvent;  
     import org.bukkit.event.EventHandler;  
     import org.bukkit.event.Listener;
+```
 
 #### From there you can access these Values:
 - The Player, who has clicked on the CloudEntity (example for the example above `event.getPlayer()`
@@ -81,7 +82,7 @@ Used Imports:
 Now if you want to change the Inventory (add Item, remove Item, change Item) you can easily set the Inventory with `event.setInventory(updateInventory);`
 
 **Example**
-
+```java
     public class Test implements Listener {  
       
       @EventHandler  
@@ -92,16 +93,16 @@ Now if you want to change the Inventory (add Item, remove Item, change Item) you
       }  
       
     }
-
+```
 Used Imports:
-
+```java
     import de.polocloud.plugin.entity.event.CloudEntityInventoryOpenEvent;  
     import org.bukkit.Material;  
     import org.bukkit.event.EventHandler;  
     import org.bukkit.event.Listener;  
     import org.bukkit.inventory.Inventory;  
     import org.bukkit.inventory.ItemStack;
-
+```
 
 :information_source: Also you can cancel to opening of the Inventory with `event.setCanceled(true);`
 
@@ -114,37 +115,44 @@ Ways to get a CloudEntity:
 
 
 1. Of Location (from spawned CloudEntity) 
-	
-        CloudEntityHandler.getInstance().getCloudEntityOfLocation(yourLocation);
 
+```java
+   CloudEntityHandler.getInstance().getCloudEntityOfLocation(yourLocation);
+```
 2. Of Location (from the Config Location) 
-	
-        CloudEntityHandler.getInstance().getCloudEntityOfLocation0(yourLocation);
-3. Of Entity (the SpawnedEntity) 
-	
-        CloudEntityHandler.getInstance().getCloudEntityOfEntity(yourEntity);
 
+```java 
+   CloudEntityHandler.getInstance().getCloudEntityOfLocation0(yourLocation);
+```
+3. Of Entity (the SpawnedEntity) 
+
+```java
+   CloudEntityHandler.getInstance().getCloudEntityOfEntity(yourEntity);
+```
 ## Get all CloudEntites
 
 Invoke:
 
+```java
     List<CloudEntity> entities = CloudEntityHandler.getInstance().getEntities();
-
+```
 
 ## Destroy a CloudEntity
 
 You need a CloudEntity, then invoke:
 
+```java
     CloudEntity cloudEntity; //<- Your CloudEntity (only for placeholder)
     cloudEntity.destroy();
-
+```
 ## Spawn a CloudEntity
 
 You need a CloudEntity, then invoke:
 
+```java
     CloudEntity cloudEntity; //<- Your CloudEntity (only for placeholder)
     cloudEntity.spawn();
-
+```
 
 ## Create a new CloudEntity
 You need:
@@ -154,7 +162,7 @@ You need:
 - String (used as title) (:information_source: Optional (How to use then? Simple use **null** as Title)
 
 :information_source: This can return you a valid CloudEntity Object
-
+```java
     Location location; //<- Your CloudEntity (only for placeholder)
     EntityType entityType; //<- Your EntityType (only for placeholder)
     ServiceGroup serviceGroup; //<- Your ServiceGroup (only for placeholder)
@@ -165,9 +173,10 @@ You need:
     or when the title should be default:
     
     CloudEntity cloudEntity = CloudEntityHandler.getInstance().createCloudEntity(location, entityType, serviceGroup, null);
-
+```
 ## Remove a CloudEntity
 You need a CloudEntity, then invoke:
-
+```java
     CloudEntity cloudEntity; //<- Your CloudEntity (only for placeholder)
     CloudEntityHandler.getInstance().removeEntity(yourCloudEntity);
+```
