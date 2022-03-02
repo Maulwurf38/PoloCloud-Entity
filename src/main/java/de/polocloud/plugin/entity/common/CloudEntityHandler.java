@@ -48,6 +48,12 @@ public class CloudEntityHandler {
         }
         spawnEntities();
 
+        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            for (CloudEntity entity : getInstance().getEntities()) {
+                entity.update();
+            }
+        });
+
         new CloudEntitiesListener();
         new InventoryClickListener();
         new CloudListener();
@@ -73,14 +79,8 @@ public class CloudEntityHandler {
         }
     }
 
-    public CloudEntity createCloudEntity(Location location, EntityType entityType, ServiceGroup serviceGroup, @Nullable String title) {
-        CloudEntityInfo cloudEntityInfo;
-        if (title == null) {
-            cloudEntityInfo = new CloudEntityInfo(location, serviceGroup.getName(), entityType);
-        } else {
-            cloudEntityInfo = new CloudEntityInfo(location, serviceGroup.getName(), entityType, title);
-        }
-
+    public CloudEntity createCloudEntity(Location location, EntityType entityType, ServiceGroup serviceGroup, @Nullable String title, @Nullable Location secondLineLocation, @Nullable String secondLine) {
+        CloudEntityInfo cloudEntityInfo = new CloudEntityInfo(location, serviceGroup.getName(), entityType, title, secondLine, secondLineLocation);
         this.config.getCloudEntities().add(cloudEntityInfo);
         CloudEntity cloudEntity = new CloudEntity(cloudEntityInfo);
         saveConfig();

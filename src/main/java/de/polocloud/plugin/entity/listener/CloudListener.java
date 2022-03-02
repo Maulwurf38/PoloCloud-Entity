@@ -23,17 +23,21 @@ public class CloudListener {
 
         CloudAPI.getInstance().getEventHandler().registerEvent(CloudPlayerUpdateEvent.class, cloudEvent -> {
             if (cloudEvent.getUpdateReason().equals(CloudPlayerUpdateEvent.UpdateReason.SERVER_SWITCH)) {
-                List<CloudEntity> toUpdate = CloudEntityHandler.getInstance().getEntities().stream().filter(entity -> entity.getCloudEntityInfo().getPossibleGroup().equalsIgnoreCase(cloudEvent.getPlayer().getServer().getGroup().getName())).toList();
-                for (CloudEntity cloudEntity : toUpdate) {
-                    cloudEntity.update();
+                if (cloudEvent.getPlayer().getServer() != null) {
+                    List<CloudEntity> toUpdate = CloudEntityHandler.getInstance().getEntities().stream().filter(entity -> entity.getCloudEntityInfo().getPossibleGroup().equalsIgnoreCase(cloudEvent.getPlayer().getServer().getGroup().getName())).toList();
+                    for (CloudEntity cloudEntity : toUpdate) {
+                        cloudEntity.update();
+                    }
                 }
             }
         });
 
         CloudAPI.getInstance().getEventHandler().registerEvent(CloudPlayerDisconnectEvent.class, cloudEvent -> {
-            List<CloudEntity> toUpdate = CloudEntityHandler.getInstance().getEntities().stream().filter(entity -> entity.getCloudEntityInfo().getPossibleGroup().equalsIgnoreCase(cloudEvent.getPlayer().getServer().getGroup().getName())).toList();
-            for (CloudEntity cloudEntity : toUpdate) {
-                cloudEntity.update();
+            if (cloudEvent.getPlayer().getServer() != null) {
+                List<CloudEntity> toUpdate = CloudEntityHandler.getInstance().getEntities().stream().filter(entity -> entity.getCloudEntityInfo().getPossibleGroup().equalsIgnoreCase(cloudEvent.getPlayer().getServer().getGroup().getName())).toList();
+                for (CloudEntity cloudEntity : toUpdate) {
+                    cloudEntity.update();
+                }
             }
         });
     }

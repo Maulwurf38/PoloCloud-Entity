@@ -6,6 +6,7 @@ import de.polocloud.api.service.CloudService;
 import de.polocloud.api.service.ServiceState;
 import de.polocloud.plugin.entity.common.CloudEntityHandler;
 import de.polocloud.plugin.entity.common.base.CloudEntity;
+import de.polocloud.plugin.entity.common.gui.type.CloudEntityGUIBlockType;
 import de.polocloud.plugin.entity.config.ConfigPlaceholdersReplacer;
 import de.polocloud.plugin.entity.event.CloudEntityInventoryOpenEvent;
 import lombok.Getter;
@@ -35,9 +36,9 @@ public class CloudEntityGUI {
             return;
         }
 
-        Inventory inventory = Bukkit.createInventory(null, size, ConfigPlaceholdersReplacer.convertString(CloudEntityHandler.getInstance().getConfig().getInventoryTitle(), serviceGroup));
+        Inventory inventory = Bukkit.createInventory(null, size, ConfigPlaceholdersReplacer.convertStringOfServiceGroup(CloudEntityHandler.getInstance().getConfig().getInventoryTitle(), serviceGroup));
         List<CloudService> services = CloudAPI.getInstance().getServiceManager().getAllServicesByGroup(serviceGroup).stream().filter(server -> server.getState().equals(ServiceState.ONLINE)).toList();
-        for (int i = 0; i < (Math.min(services.size(), 53)); i++) {
+        for (int i = 0; i < (Math.min(services.size(), size - 1)); i++) {
             inventory.addItem(buildItemStack(services.get(i)));
         }
 
@@ -54,14 +55,23 @@ public class CloudEntityGUI {
     }
 
     public ItemStack buildItemStack(CloudService cloudService) {
+        Material material;
+        if (cloudService.getGroup().isMaintenance()) {
+            material = CloudEntityHandler.getInstance().getConfig().getHashMap().getOrDefault(CloudEntityGUIBlockType.MAINTENANCE, Material.YELLOW_CONCRETE);
+        } else if (cloudService.isFull()) {
+            material = CloudEntityHandler.getInstance().getConfig().getHashMap().getOrDefault(CloudEntityGUIBlockType.FULL, Material.RED_CONCRETE);
+        } else {
+            material = (cloudService.getOnlineCount() > 0 ? CloudEntityHandler.getInstance().getConfig().getHashMap().getOrDefault(CloudEntityGUIBlockType.PLAYERS, Material.GREEN_CONCRETE) : CloudEntityHandler.getInstance().getConfig().getHashMap().getOrDefault(CloudEntityGUIBlockType.NO_PLAYER, Material.LIME_CONCRETE));
+        }
+
         final var itemStack = new ItemStack(
-                (cloudService.getOnlineCount() > 0 ? Material.GREEN_CONCRETE : Material.LIME_CONCRETE),
-                (cloudService.getOnlineCount() != 0 ? cloudService.getOnlineCount() : 1));
+                material,
+                (cloudService.getOnlineCount() != 0 ? Math.min(64, cloudService.getOnlineCount()) : 1));
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ConfigPlaceholdersReplacer.convertString(CloudEntityHandler.getInstance().getConfig().getItemName(), cloudService));
+        itemMeta.setDisplayName(ConfigPlaceholdersReplacer.convertStringOfCloudService(CloudEntityHandler.getInstance().getConfig().getItemName(), cloudService));
         List<String> lore = new ArrayList<>();
         for (String s : CloudEntityHandler.getInstance().getConfig().getItemLore()) {
-            lore.add(ConfigPlaceholdersReplacer.convertString(s, cloudService));
+            lore.add(ConfigPlaceholdersReplacer.convertStringOfCloudService(s, cloudService));
         }
         itemMeta.setLore(lore);
         itemMeta.getPersistentDataContainer().set(CloudEntityHandler.getInstance().getNamespacedKey(), PersistentDataType.STRING, cloudService.getName());

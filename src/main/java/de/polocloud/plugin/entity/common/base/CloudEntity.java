@@ -6,6 +6,7 @@ import de.polocloud.plugin.entity.common.CloudEntityHandler;
 import de.polocloud.plugin.entity.common.base.info.CloudEntityInfo;
 import de.polocloud.plugin.entity.config.ConfigPlaceholdersReplacer;
 import lombok.Getter;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Villager;
@@ -15,6 +16,7 @@ public class CloudEntity {
 
     private final CloudEntityInfo cloudEntityInfo;
     private LivingEntity spawnedEntity;
+    private ArmorStand secondLine;
 
     public CloudEntity(CloudEntityInfo cloudEntityInfo) {
         this.cloudEntityInfo = cloudEntityInfo;
@@ -24,6 +26,7 @@ public class CloudEntity {
 
     public void destroy() {
         this.spawnedEntity.remove();
+        this.secondLine.remove();
     }
 
     public void spawn() {
@@ -31,13 +34,24 @@ public class CloudEntity {
             return;
         }
 
+        this.secondLine = cloudEntityInfo.getSecondLineLocation().getWorld().spawn(this.cloudEntityInfo.getSecondLineLocation(), ArmorStand.class);
+        this.secondLine.setSilent(true);
+        this.secondLine.setFireTicks(0);
+        this.secondLine.setAI(false);
+        this.secondLine.setGravity(false);
+        this.secondLine.setCustomNameVisible(!cloudEntityInfo.getSecondLine().equals(""));
+        this.secondLine.setVisible(false);
+        this.secondLine.setMarker(true);
+
         this.spawnedEntity = (LivingEntity) cloudEntityInfo.getLocation().getWorld().spawn(cloudEntityInfo.getLocation(), cloudEntityInfo.getEntityType().getEntityClass());
         this.spawnedEntity.setCustomNameVisible(true);
         ServiceGroup serviceGroup = CloudAPI.getInstance().getGroupManager().getServiceGroupByNameOrNull(this.cloudEntityInfo.getPossibleGroup());
         if (serviceGroup == null) {
             this.spawnedEntity.setCustomName("§cError §7(Group not found)");
+            this.secondLine.setCustomName("§cError §7(Group not found)");
         } else {
-            this.spawnedEntity.setCustomName(ConfigPlaceholdersReplacer.convertString(this.cloudEntityInfo, serviceGroup));
+            this.spawnedEntity.setCustomName(ConfigPlaceholdersReplacer.convertStringOfServiceGroup(this.cloudEntityInfo.getEntityTitle(), serviceGroup));
+            this.secondLine.setCustomName(ConfigPlaceholdersReplacer.convertStringOfServiceGroup(this.cloudEntityInfo.getSecondLine(), serviceGroup));
         }
         this.spawnedEntity.setSilent(true);
         this.spawnedEntity.setAI(false);
@@ -58,7 +72,8 @@ public class CloudEntity {
             if (serviceGroup == null) {
                 return;
             }
-            this.spawnedEntity.setCustomName(ConfigPlaceholdersReplacer.convertString(this.cloudEntityInfo, serviceGroup));
+            this.spawnedEntity.setCustomName(ConfigPlaceholdersReplacer.convertStringOfServiceGroup(this.cloudEntityInfo.getEntityTitle(), serviceGroup));
+            this.secondLine.setCustomName(ConfigPlaceholdersReplacer.convertStringOfServiceGroup(this.cloudEntityInfo.getSecondLine(), serviceGroup));
         }
     }
 

@@ -79,7 +79,7 @@ public class CloudEntityCommand implements CommandExecutor {
                     return false;
                 }
 
-                CloudEntityHandler.getInstance().createCloudEntity(player.getLocation(), entityType, serviceGroup, null);
+                CloudEntityHandler.getInstance().createCloudEntity(player.getLocation(), entityType, serviceGroup, null, null, null);
                 player.sendMessage("§aCreated!");
                 return false;
             }
@@ -109,7 +109,7 @@ public class CloudEntityCommand implements CommandExecutor {
                     stringBuilder.append(ChatColor.translateAlternateColorCodes('&', args[i])).append(" ");
                 }
 
-                CloudEntityHandler.getInstance().createCloudEntity(player.getLocation(), entityType, serviceGroup, stringBuilder.toString());
+                CloudEntityHandler.getInstance().createCloudEntity(player.getLocation(), entityType, serviceGroup, stringBuilder.toString(), null, null);
                 return false;
             }
         }

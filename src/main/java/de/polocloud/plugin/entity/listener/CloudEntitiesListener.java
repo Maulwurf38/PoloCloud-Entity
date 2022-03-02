@@ -25,6 +25,10 @@ public class CloudEntitiesListener implements Listener {
     @EventHandler
     public void handle(PlayerInteractEntityEvent event) {
         CloudEntity cloudEntity = CloudEntityHandler.getInstance().getCloudEntityOfEntity(event.getRightClicked());
+        if (cloudEntity == null) {
+            cloudEntity = CloudEntityHandler.getInstance().getCloudEntityOfLocation(event.getRightClicked().getLocation());
+        }
+        
         if (cloudEntity != null) {
             event.setCancelled(true);
             new CloudEntityGUI(cloudEntity, event.getPlayer());
