@@ -43,11 +43,12 @@ For removing there is only one Way:
 There are different placeholders. You use them with these brackets {} in the bracket you have to write the Name of the Placeholder
 |                |Funktion                          |Example                       |
 |----------------|-------------------------------|-----------------------------|
-|{GROUP}|`ServiceGroup#getName()` Gets the Name of the specific ServiceGroup            |{GROUP} -> Lobby         |
-|{SERVER}|`CloudService#getName()` Gets the Name of the specific CloudService            |{SERVER} -> Lobby-1         |
-|{ONLINE}|`CloudService#getOnlineCount()` Gets the OnlinePlayers of the specific CloudService            |{ONLINE} -> 25         |
-|{MAX}|`CloudService#getMaxPlayers()` Gets the Maximum Players of the specific CloudService            |{MAX} -> 50         |
-|{MOTD}|`CloudService#getMotd()` Gets the MOTD of the specific CloudService            |{MOTD} -> "Super tolle Motd"         |
+|{GROUP}|`ServiceGroup#getName()` Gets the Name of the specific ServiceGroup (In Entity and Inventory Title useable)          |{GROUP} -> Lobby         |
+|{PLAYERS}|`none` Gets all Players of the specific ServiceGroup (Only in Title of the Entity useable)         |{PLAYERS} -> 95         |
+|{SERVER}|`CloudService#getName()` Gets the Name of the specific CloudService  (Only in Inventory useable)           |{SERVER} -> Lobby-1         |
+|{ONLINE}|`CloudService#getOnlineCount()` Gets the OnlinePlayers of the specific CloudService Only in Inventory useable)            |{ONLINE} -> 25         |
+|{MAX}|`CloudService#getMaxPlayers()` Gets the Maximum Players of the specific CloudService  Only in Inventory useable)           |{MAX} -> 50         |
+|{MOTD}|`CloudService#getMotd()` Gets the MOTD of the specific CloudService    Only in Inventory useable)         |{MOTD} -> "Super tolle Motd"         |
 
 # Developers
 
