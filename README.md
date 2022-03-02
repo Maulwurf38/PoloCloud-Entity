@@ -43,19 +43,32 @@ For removing there is only one Way:
 There are different placeholders. You use them with these brackets {} in the bracket you have to write the Name of the Placeholder
 |                |Funktion                          |Example                       |
 |----------------|-------------------------------|-----------------------------|
-|{GROUP}|`ServiceGroup#getName()` Gets the Name of the specific ServiceGroup            |{GROUP} -> Lobby         |
-|{SERVER}|`CloudService#getName()` Gets the Name of the specific CloudService            |{SERVER} -> Lobby-1         |
-|{ONLINE}|`CloudService#getOnlineCount()` Gets the OnlinePlayers of the specific CloudService            |{ONLINE} -> 25         |
-|{MAX}|`CloudService#getMaxPlayers()` Gets the Maximum Players of the specific CloudService            |{MAX} -> 50         |
-|{MOTD}|`CloudService#getMotd()` Gets the MOTD of the specific CloudService            |{MOTD} -> "Super tolle Motd"         |
+|{GROUP}|`ServiceGroup#getName()` Gets the Name of the specific ServiceGroup (In Entity and Inventory Title useable)          |{GROUP} -> Lobby         |
+|{PLAYERS}|`none` Gets all Players of the specific ServiceGroup (Only in Title of the Entity useable)         |{PLAYERS} -> 95         |
+|{SERVER}|`CloudService#getName()` Gets the Name of the specific CloudService  (Only in Inventory useable)           |{SERVER} -> Lobby-1         |
+|{ONLINE}|`CloudService#getOnlineCount()` Gets the OnlinePlayers of the specific CloudService Only in Inventory useable)            |{ONLINE} -> 25         |
+|{MAX}|`CloudService#getMaxPlayers()` Gets the Maximum Players of the specific CloudService  Only in Inventory useable)           |{MAX} -> 50         |
+|{MOTD}|`CloudService#getMotd()` Gets the MOTD of the specific CloudService    Only in Inventory useable)         |{MOTD} -> "Super tolle Motd"         |
 
 # Developers
+
+Download the [**SourceCode**](https://github.com/PoloServices/PoloCloud-Entity/archive/refs/tags/2.0.1.zip), import it in your **IDE** and run '**mvn install**'.
+
+Then in your Target-Project import the **PoloCloud-Entity** Dependency in your **pom.xml**
+
+```xml
+   <dependency>
+      <groupId>de.polocloud</groupId>
+      <artifactId>PoloCloud-Entity</artifactId>
+      <version>2.0.1-RELEASE</version>
+   </dependency>
+```
 
 **PoloCloud-Entity** offers the possibility to change the to open Inventory when a Player clicks on a CloudEntity
 
 *How does it work?*
 You have to register a Listener, from there easly create a new void-Method with the @EventHandler Annonation
-
+```java
     public class Test implements Listener {  
       
       @EventHandler  
@@ -64,12 +77,13 @@ You have to register a Listener, from there easly create a new void-Method with 
       }  
       
     }
-
+```
 Used Imports:
-
+```java
     import de.polocloud.plugin.entity.event.CloudEntityInventoryOpenEvent;  
     import org.bukkit.event.EventHandler;  
     import org.bukkit.event.Listener;
+```
 
 #### From there you can access these Values:
 - The Player, who has clicked on the CloudEntity (example for the example above `event.getPlayer()`
@@ -81,7 +95,7 @@ Used Imports:
 Now if you want to change the Inventory (add Item, remove Item, change Item) you can easily set the Inventory with `event.setInventory(updateInventory);`
 
 **Example**
-
+```java
     public class Test implements Listener {  
       
       @EventHandler  
@@ -92,16 +106,16 @@ Now if you want to change the Inventory (add Item, remove Item, change Item) you
       }  
       
     }
-
+```
 Used Imports:
-
+```java
     import de.polocloud.plugin.entity.event.CloudEntityInventoryOpenEvent;  
     import org.bukkit.Material;  
     import org.bukkit.event.EventHandler;  
     import org.bukkit.event.Listener;  
     import org.bukkit.inventory.Inventory;  
     import org.bukkit.inventory.ItemStack;
-
+```
 
 :information_source: Also you can cancel to opening of the Inventory with `event.setCanceled(true);`
 
@@ -114,37 +128,44 @@ Ways to get a CloudEntity:
 
 
 1. Of Location (from spawned CloudEntity) 
-	
-        CloudEntityHandler.getInstance().getCloudEntityOfLocation(yourLocation);
 
+```java
+   CloudEntityHandler.getInstance().getCloudEntityOfLocation(yourLocation);
+```
 2. Of Location (from the Config Location) 
-	
-        CloudEntityHandler.getInstance().getCloudEntityOfLocation0(yourLocation);
-3. Of Entity (the SpawnedEntity) 
-	
-        CloudEntityHandler.getInstance().getCloudEntityOfEntity(yourEntity);
 
+```java 
+   CloudEntityHandler.getInstance().getCloudEntityOfLocation0(yourLocation);
+```
+3. Of Entity (the SpawnedEntity) 
+
+```java
+   CloudEntityHandler.getInstance().getCloudEntityOfEntity(yourEntity);
+```
 ## Get all CloudEntites
 
 Invoke:
 
+```java
     List<CloudEntity> entities = CloudEntityHandler.getInstance().getEntities();
-
+```
 
 ## Destroy a CloudEntity
 
 You need a CloudEntity, then invoke:
 
+```java
     CloudEntity cloudEntity; //<- Your CloudEntity (only for placeholder)
     cloudEntity.destroy();
-
+```
 ## Spawn a CloudEntity
 
 You need a CloudEntity, then invoke:
 
+```java
     CloudEntity cloudEntity; //<- Your CloudEntity (only for placeholder)
     cloudEntity.spawn();
-
+```
 
 ## Create a new CloudEntity
 You need:
@@ -154,7 +175,7 @@ You need:
 - String (used as title) (:information_source: Optional (How to use then? Simple use **null** as Title)
 
 :information_source: This can return you a valid CloudEntity Object
-
+```java
     Location location; //<- Your CloudEntity (only for placeholder)
     EntityType entityType; //<- Your EntityType (only for placeholder)
     ServiceGroup serviceGroup; //<- Your ServiceGroup (only for placeholder)
@@ -165,9 +186,10 @@ You need:
     or when the title should be default:
     
     CloudEntity cloudEntity = CloudEntityHandler.getInstance().createCloudEntity(location, entityType, serviceGroup, null);
-
+```
 ## Remove a CloudEntity
 You need a CloudEntity, then invoke:
-
+```java
     CloudEntity cloudEntity; //<- Your CloudEntity (only for placeholder)
     CloudEntityHandler.getInstance().removeEntity(yourCloudEntity);
+```
