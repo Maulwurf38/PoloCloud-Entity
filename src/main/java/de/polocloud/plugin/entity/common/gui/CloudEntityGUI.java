@@ -57,11 +57,11 @@ public class CloudEntityGUI {
     public ItemStack buildItemStack(CloudService cloudService) {
         Material material;
         if (cloudService.getGroup().isMaintenance()) {
-            material = CloudEntityHandler.getInstance().getConfig().getHashMap().getOrDefault(CloudEntityGUIBlockType.MAINTENANCE, Material.YELLOW_CONCRETE);
+            material = CloudEntityHandler.getInstance().getConfig().getInventory_item_materials().getOrDefault(CloudEntityGUIBlockType.MAINTENANCE, Material.YELLOW_CONCRETE);
         } else if (cloudService.isFull()) {
-            material = CloudEntityHandler.getInstance().getConfig().getHashMap().getOrDefault(CloudEntityGUIBlockType.FULL, Material.RED_CONCRETE);
+            material = CloudEntityHandler.getInstance().getConfig().getInventory_item_materials().getOrDefault(CloudEntityGUIBlockType.FULL, Material.RED_CONCRETE);
         } else {
-            material = (cloudService.getOnlineCount() > 0 ? CloudEntityHandler.getInstance().getConfig().getHashMap().getOrDefault(CloudEntityGUIBlockType.PLAYERS, Material.GREEN_CONCRETE) : CloudEntityHandler.getInstance().getConfig().getHashMap().getOrDefault(CloudEntityGUIBlockType.NO_PLAYER, Material.LIME_CONCRETE));
+            material = (cloudService.getOnlineCount() > 0 ? CloudEntityHandler.getInstance().getConfig().getInventory_item_materials().getOrDefault(CloudEntityGUIBlockType.PLAYERS, Material.GREEN_CONCRETE) : CloudEntityHandler.getInstance().getConfig().getInventory_item_materials().getOrDefault(CloudEntityGUIBlockType.NO_PLAYER, Material.LIME_CONCRETE));
         }
 
         final var itemStack = new ItemStack(
