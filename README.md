@@ -63,7 +63,7 @@ Then in your Target-Project import the **PoloCloud-Entity** Dependency in your *
    <dependency>
       <groupId>de.polocloud</groupId>
       <artifactId>PoloCloud-Entity</artifactId>
-      <version>2.1.0-RELEASE</version>
+      <version>2.1.1-RELEASE</version>
    </dependency>
 ```
 
