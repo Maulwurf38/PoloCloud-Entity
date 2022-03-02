@@ -19,7 +19,7 @@ public class EntitiesConfig {
     private String inventoryTitle = "§b{GROUP}";
     private String itemName = "§8» §a{SERVER}";
     private String[] itemLore = new String[]{"", "§7Players §8» §b{ONLINE}§7/§b{MAX}", "§7Motd §8» §b{MOTD}", ""};
-    private Map<CloudEntityGUIBlockType, Material> hashMap = new HashMap<>() {{
+    private Map<CloudEntityGUIBlockType, Material> inventory_item_materials = new HashMap<>() {{
         put(CloudEntityGUIBlockType.FULL, Material.RED_CONCRETE);
         put(CloudEntityGUIBlockType.NO_PLAYER, Material.LIME_CONCRETE);
         put(CloudEntityGUIBlockType.PLAYERS, Material.GREEN_CONCRETE);
