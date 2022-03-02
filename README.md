@@ -43,14 +43,17 @@ For removing there is only one Way:
 There are different placeholders. You use them with these brackets {} in the bracket you have to write the Name of the Placeholder
 |                |Funktion                          |Example                       |
 |----------------|-------------------------------|-----------------------------|
-|{GROUP}|`ServiceGroup#getName()` Gets the Name of the specific ServiceGroup (In Entity and Inventory Title useable)          |{GROUP} -> Lobby         |
+|{GROUP}|`ServiceGroup#getName()` Gets the Name of the specific ServiceGroup        |{GROUP} -> Lobby         |
 |{PLAYERS}|`none` Gets all Players of the specific ServiceGroup (Only in Title of the Entity useable)         |{PLAYERS} -> 95         |
 |{SERVER}|`CloudService#getName()` Gets the Name of the specific CloudService  (Only in Inventory useable)           |{SERVER} -> Lobby-1         |
 |{ONLINE}|`CloudService#getOnlineCount()` Gets the OnlinePlayers of the specific CloudService Only in Inventory useable)            |{ONLINE} -> 25         |
 |{MAX}|`CloudService#getMaxPlayers()` Gets the Maximum Players of the specific CloudService  Only in Inventory useable)           |{MAX} -> 50         |
 |{MOTD}|`CloudService#getMotd()` Gets the MOTD of the specific CloudService    Only in Inventory useable)         |{MOTD} -> "Super tolle Motd"         |
-
-# Developers
+|{{HIGHEST_SERVICE_NAME}}|`CloudService#getName()` Gets the ServiceName of the CloudService with the highest Player-Count       |{HIGHEST_SERVICE_NAME} -> "Lobby-1"         |
+|{HIGHEST_SERVICE_ONLINE}|`CloudService#getOnlineCount()` Gets the PlayerCount of the CloudService with the highest Player-Count          |{HIGHEST_SERVICE_ONLINE} -> 95         |
+|{HIGHEST_SERVICE_MAX}|`CloudService#getMaxPlayers()` Gets the PlayerCount of the CloudService with the highest Player-Count         |{HIGHEST_SERVICE_MAX} -> 100         |
+|{HIGHEST_SERVICE_MOTD}|`CloudService#getMotd()` Gets the Motd of the CloudService with the highest Player-Count         |{HIGHEST_SERVICE_MOTD} -> "Motd of the Service with the highest Player-Count"         |
+# Developer
 
 Download the [**SourceCode**](https://github.com/PoloServices/PoloCloud-Entity/archive/refs/tags/2.0.1.zip), import it in your **IDE** and run '**mvn install**'.
 
@@ -60,7 +63,7 @@ Then in your Target-Project import the **PoloCloud-Entity** Dependency in your *
    <dependency>
       <groupId>de.polocloud</groupId>
       <artifactId>PoloCloud-Entity</artifactId>
-      <version>2.0.1-RELEASE</version>
+      <version>2.1.0-RELEASE</version>
    </dependency>
 ```
 
@@ -173,6 +176,8 @@ You need:
 - EntityType
 - ServiceGroup
 - String (used as title) (:information_source: Optional (How to use then? Simple use **null** as Title)
+- String (used as secondLine) (:information_source: Optional (How to use then? Simple use **null** as Title)
+- Location (used as title) (:information_source: Optional (How to use then? Simple use **null** as Title)
 
 :information_source: This can return you a valid CloudEntity Object
 ```java
@@ -180,12 +185,22 @@ You need:
     EntityType entityType; //<- Your EntityType (only for placeholder)
     ServiceGroup serviceGroup; //<- Your ServiceGroup (only for placeholder)
     String title; //<- Optional (Nullable) (only for placeholder)
+    String secondLine; //<- Optional (Nullable) (only for placeholder)
+    Location secondLineLocation; //<- Optional (Nullable) (only for placeholder)
     
-    CloudEntity cloudEntity = CloudEntityHandler.getInstance().createCloudEntity(location, entityType, serviceGroup, title);
+    CloudEntity cloudEntity = CloudEntityHandler.getInstance().createCloudEntity(location, entityType, serviceGroup, title, secondLine, secondLineLocation);
     
     or when the title should be default:
     
-    CloudEntity cloudEntity = CloudEntityHandler.getInstance().createCloudEntity(location, entityType, serviceGroup, null);
+    CloudEntity cloudEntity = CloudEntityHandler.getInstance().createCloudEntity(location, entityType, serviceGroup, null, null, null);
+    
+    or when the secondTitle should be null:
+    
+    CloudEntity cloudEntity = CloudEntityHandler.getInstance().createCloudEntity(location, entityType, serviceGroup, title, null, null);
+    
+    or when the secondTitleLocation should be default:
+    
+    CloudEntity cloudEntity = CloudEntityHandler.getInstance().createCloudEntity(location, entityType, serviceGroup, title, secondLine, null);
 ```
 ## Remove a CloudEntity
 You need a CloudEntity, then invoke:
