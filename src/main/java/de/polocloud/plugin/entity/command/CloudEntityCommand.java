@@ -74,7 +74,7 @@ public class CloudEntityCommand implements CommandExecutor {
                     player.sendMessage("§cThis cloudgroup doesn't exist!");
                     return false;
                 }
-                if (!serviceGroup.getGameServerVersion().getServiceTypes().equals(ServiceType.SERVER)) {
+                if (!serviceGroup.getGameServerVersion().isProxy()) {
                     player.sendMessage("§cThis cloudgroup is a proxy group!");
                     return false;
                 }
@@ -97,7 +97,7 @@ public class CloudEntityCommand implements CommandExecutor {
                     player.sendMessage("§cThis cloudgroup doesn't exist!");
                     return false;
                 }
-                if (!serviceGroup.getGameServerVersion().getServiceTypes().equals(ServiceType.SERVER)) {
+                if (!serviceGroup.getGameServerVersion().isProxy()) {
                     player.sendMessage("§cThis cloudgroup is a proxy group!");
                     return false;
                 }
